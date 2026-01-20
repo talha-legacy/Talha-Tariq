@@ -1,0 +1,673 @@
+/* ═══════════════════════════════════════════════════════════════
+   Talha Tariq PORTFOLIO - STYLESHEET
+   
+   📁 FILE STRUCTURE:
+   - index.html: HTML structure
+   - style.css: This file (all styles)
+   - script.js: JavaScript functionality
+   
+   🎨 COLOR SCHEME:
+   - Light Mode: White backgrounds, dark text, light cursor effect
+   - Dark Mode: Dark backgrounds, light text, glowing star cursor
+   - Accent: Blue (#3b82f6) and Zinc tones
+   
+   📝 HOW TO CUSTOMIZE:
+   - Change colors: Look for color variables in :root
+   - Modify fonts: Change font-family in * selector
+   - Adjust spacing: Modify padding/margin values
+   ═══════════════════════════════════════════════════════════════ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   COLOR VARIABLES
+   📝 TO CHANGE COLORS: Modify these hex values
+   ═══════════════════════════════════════════════════════════════ */
+:root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f9fafb;
+    --text-primary: #111827;
+    --text-secondary: #6b7280;
+    --accent: #3b82f6;
+    --accent-hover: #2563eb;
+    --border: #e5e7eb;
+    --shadow: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] {
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --accent: #3b82f6;
+    --accent-hover: #60a5fa;
+    --border: #334155;
+    --shadow: rgba(0, 0, 0, 0.3);
+}
+
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    cursor: none; /* Hide default cursor for custom effect */
+}
+
+/* Hide default cursor on interactive elements too */
+a, button, .skill-card, .project-card, .logo-circle {
+    cursor: none !important;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CUSTOM CURSOR EFFECT
+   ✨ Light mode: BOLD visible blue glow (so user notices it!)
+   ✨ Dark mode: Glowing star effect with multiple halos
+   ✨ Grabbing effect: Changes to "grab" visual on interactive elements
+   ═══════════════════════════════════════════════════════════════ */
+.cursor-glow {
+    position: fixed;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.15s ease, opacity 0.3s ease;
+    opacity: 0;
+}
+
+/* Light mode cursor - BOLD and VISIBLE blue glow */
+:root .cursor-glow {
+    background: radial-gradient(
+        circle, 
+        rgba(59, 130, 246, 0.8) 0%, 
+        rgba(59, 130, 246, 0.6) 20%,
+        rgba(59, 130, 246, 0.4) 40%, 
+        rgba(59, 130, 246, 0.2) 60%,
+        transparent 80%
+    );
+    box-shadow: 
+        0 0 20px rgba(59, 130, 246, 0.8),
+        0 0 40px rgba(59, 130, 246, 0.5),
+        0 0 60px rgba(59, 130, 246, 0.3);
+    border: 2px solid rgba(59, 130, 246, 0.6);
+}
+
+/* Dark mode cursor - star glow effect */
+[data-theme="dark"] .cursor-glow {
+    background: radial-gradient(
+        circle, 
+        rgba(255, 255, 255, 0.9) 0%, 
+        rgba(59, 130, 246, 0.7) 15%,
+        rgba(139, 92, 246, 0.5) 30%, 
+        rgba(59, 130, 246, 0.3) 50%,
+        transparent 75%
+    );
+    box-shadow: 
+        0 0 30px rgba(255, 255, 255, 0.8),
+        0 0 50px rgba(59, 130, 246, 0.8),
+        0 0 70px rgba(139, 92, 246, 0.6),
+        0 0 90px rgba(59, 130, 246, 0.4);
+}
+
+/* Grabbing state - when hovering over interactive elements */
+.cursor-glow.grabbing {
+    transform: scale(1.3) !important;
+}
+
+/* Add grabbing visual indicator */
+.cursor-glow.grabbing::before {
+    content: '✨';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 20px;
+    animation: sparkle 0.6s ease-in-out infinite;
+}
+
+@keyframes sparkle {
+    0%, 100% { 
+        opacity: 1; 
+        transform: translate(-50%, -50%) scale(1);
+    }
+    50% { 
+        opacity: 0.6; 
+        transform: translate(-50%, -50%) scale(1.2);
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   NAVIGATION BAR
+   Now with separated logo and theme toggle
+   ═══════════════════════════════════════════════════════════════ */
+nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: var(--bg-primary);
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    transition: background-color 0.3s ease;
+}
+
+/* Logo Container - Left Side */
+.logo-container {
+    margin-right: auto;
+}
+
+.logo {
+    text-decoration: none;
+    display: inline-block;
+}
+
+.logo-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent) 0%, #8b5cf6 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+    overflow: hidden;
+}
+
+.logo-circle::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s;
+}
+
+.logo-circle:hover::before {
+    left: 100%;
+}
+
+.logo-circle:hover {
+    transform: rotate(360deg) scale(1.1);
+    box-shadow: 0 6px 25px rgba(59, 130, 246, 0.5);
+}
+
+.logo-text {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.logo-circle:hover .logo-text:first-child {
+    transform: translateX(-5px) rotate(-10deg);
+}
+
+.logo-circle:hover .logo-text:last-child {
+    transform: translateX(5px) rotate(10deg);
+}
+
+/* Navigation Right Side - Links and Theme Toggle */
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+.nav-links a {
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: color 0.3s ease;
+    font-weight: 500;
+    position: relative;
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--accent);
+    transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+.nav-links a:hover {
+    color: var(--accent);
+}
+
+/* Theme Toggle Button - Separated with distance */
+.theme-toggle {
+    background: var(--bg-secondary);
+    border: 2px solid var(--border);
+    color: var(--text-primary);
+    padding: 0.6rem 1rem;
+    border-radius: 2rem;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.theme-toggle:hover {
+    border-color: var(--accent);
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px var(--shadow);
+}
+
+/* Sun icon visible in dark mode, moon in light mode */
+.sun-icon {
+    display: none;
+}
+
+.moon-icon {
+    display: inline;
+}
+
+[data-theme="dark"] .sun-icon {
+    display: inline;
+}
+
+[data-theme="dark"] .moon-icon {
+    display: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   HERO SECTION
+   ═══════════════════════════════════════════════════════════════ */
+.hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    padding-top: 80px;
+}
+
+.hero-content h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, var(--accent) 0%, #8b5cf6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: fadeInUp 0.8s ease;
+}
+
+.hero-content .tagline {
+    font-size: 1.5rem;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+    animation: fadeInUp 1s ease;
+}
+
+.hero-content .description {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto 2rem;
+    line-height: 1.8;
+    animation: fadeInUp 1.2s ease;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    animation: fadeInUp 1.4s ease;
+}
+
+.btn {
+    padding: 0.875rem 2rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Glow effect on hover */
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease, height 0.6s ease;
+}
+
+.btn:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.btn-primary {
+    background-color: var(--accent);
+    color: white;
+    box-shadow: 0 0 0 rgba(59, 130, 246, 0);
+    transition: all 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: var(--accent-hover);
+    transform: translateY(-2px);
+    box-shadow: 
+        0 10px 20px var(--shadow),
+        0 0 30px rgba(59, 130, 246, 0.6),
+        0 0 50px rgba(59, 130, 246, 0.4);
+}
+
+.btn-secondary {
+    border: 2px solid var(--accent);
+    color: var(--accent);
+    box-shadow: 0 0 0 rgba(59, 130, 246, 0);
+    transition: all 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background-color: var(--accent);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 
+        0 10px 20px var(--shadow),
+        0 0 30px rgba(59, 130, 246, 0.5),
+        0 0 50px rgba(59, 130, 246, 0.3);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SECTIONS (About, Skills, Projects, Contact)
+   ═══════════════════════════════════════════════════════════════ */
+section {
+    padding: 5rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
+    text-align: center;
+    position: relative;
+}
+
+section h2::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 4px;
+    background: var(--accent);
+    margin: 1rem auto 0;
+    border-radius: 2px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ABOUT SECTION
+   ═══════════════════════════════════════════════════════════════ */
+.about-content {
+    background-color: var(--bg-secondary);
+    padding: 3rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px var(--shadow);
+    transition: transform 0.3s ease;
+}
+
+.about-content:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px var(--shadow);
+}
+
+.about-content p {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SKILLS SECTION
+   ═══════════════════════════════════════════════════════════════ */
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1.5rem;
+}
+
+.skill-card {
+    background-color: var(--bg-secondary);
+    padding: 2rem 1rem;
+    border-radius: 0.75rem;
+    text-align: center;
+    border: 2px solid var(--border);
+    transition: all 0.3s ease;
+    box-shadow: 0 0 0 rgba(59, 130, 246, 0);
+}
+
+.skill-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-5px);
+    box-shadow: 
+        0 10px 20px var(--shadow),
+        0 0 25px rgba(59, 130, 246, 0.4),
+        0 0 40px rgba(59, 130, 246, 0.2);
+}
+
+.skill-card h3 {
+    color: var(--text-primary);
+    font-size: 1.1rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PROJECTS SECTION
+   ═══════════════════════════════════════════════════════════════ */
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.project-card {
+    background-color: var(--bg-secondary);
+    padding: 2rem;
+    border-radius: 1rem;
+    border: 2px solid var(--border);
+    transition: all 0.3s ease;
+    box-shadow: 0 0 0 rgba(59, 130, 246, 0);
+}
+
+.project-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-5px);
+    box-shadow: 
+        0 10px 20px var(--shadow),
+        0 0 30px rgba(59, 130, 246, 0.4),
+        0 0 50px rgba(59, 130, 246, 0.2);
+}
+
+.project-card h3 {
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.project-card p {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.project-link {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.project-link:hover {
+    color: var(--accent-hover);
+}
+
+.coming-soon {
+    text-align: center;
+    color: var(--text-secondary);
+    font-style: italic;
+    padding: 3rem;
+    background-color: var(--bg-secondary);
+    border-radius: 1rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CONTACT SECTION
+   ═══════════════════════════════════════════════════════════════ */
+.contact-content {
+    text-align: center;
+}
+
+.contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    background-color: var(--bg-secondary);
+    border-radius: 0.75rem;
+    border: 2px solid var(--border);
+    transition: all 0.3s ease;
+}
+
+.contact-item:hover {
+    border-color: var(--accent);
+    transform: translateX(5px);
+}
+
+.contact-item a {
+    color: var(--text-primary);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.contact-item a:hover {
+    color: var(--accent);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   FOOTER
+   ═══════════════════════════════════════════════════════════════ */
+footer {
+    background-color: var(--bg-secondary);
+    padding: 2rem;
+    text-align: center;
+    color: var(--text-secondary);
+    border-top: 1px solid var(--border);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE DESIGN
+   ═══════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+    nav {
+        padding: 1rem;
+    }
+
+    .nav-right {
+        gap: 1.5rem;
+    }
+
+    .nav-links {
+        gap: 1rem;
+    }
+
+    .nav-links a {
+        font-size: 0.9rem;
+    }
+
+    .logo-circle {
+        width: 50px;
+        height: 50px;
+    }
+
+    .logo-text {
+        font-size: 1.2rem;
+    }
+
+    .hero-content h1 {
+        font-size: 2.5rem;
+    }
+
+    .hero-content .tagline {
+        font-size: 1.2rem;
+    }
+
+    section {
+        padding: 3rem 1rem;
+    }
+
+    section h2 {
+        font-size: 2rem;
+    }
+
+    .cta-buttons {
+        flex-direction: column;
+    }
+}
